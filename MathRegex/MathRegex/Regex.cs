@@ -5,23 +5,8 @@ using System.Text.RegularExpressions;
 using static System.Console;
 
 
-namespace Lab1
+namespace MathRegex
 {
-	class Program
-	{
-		static void Main(string[] args)
-		{
-			string str = "cost = ((price + 2E-4 + 1) * 0.98 * x + 2) * qq * ww + ee + rr";
-			//string str = "cost = qq * ww + ee + rr * ((price + 2E-4 + 1) *0.98 * x + 2)";
-
-			Regular R = new Regular(str);
-			R.Calculations();
-
-			Console.ReadKey();
-			return;
-		}
-	}
-
 	class Regular
 	{
 		const string pattern = @"
@@ -96,7 +81,7 @@ namespace Lab1
 				}
 
 			}
-			else if (m.Count == 0) Console.WriteLine("Error in position 1'{0}'", str[0]);
+			else if (m.Count == 0) WriteLine("Error in position 1'{0}'", str[0]);
 
 			else
 			{
@@ -107,16 +92,15 @@ namespace Lab1
 					if (m[i].Index > index) break;
 					index = m[i].Index + m[i].Length;
 				}
-				 
-				Console.WriteLine("Error in position {0}'{1}'", index + 1, str[index]);
+
+				WriteLine("Error in position {0}'{1}'", index + 1, str[index]);
 			}
 
-			WriteLine(polstr);
+			WriteLine("Result = \n{0}' \n\nNon-optimized code:", polstr);
 
-			Console.WriteLine("---------");
 
 			string s = code.Peek();
-			Console.WriteLine(code.Pop());
+			WriteLine(code.Pop());
 
 			List<(string, string)> actions_opt = new List<(string, string)>();
 			string b = "", c = "";
@@ -234,21 +218,21 @@ namespace Lab1
 				}
 			}
 
-			Console.WriteLine("---------");
+			WriteLine("\nOptimized code:");
 
 			foreach ((string, string) i in actions_opt)
-				Console.WriteLine(i);
+				WriteLine(i);
 		}
 
 		/**
-		* The function generates optimized code
+		* The function generates optimized cod
 		*/
 		public void Actions(string s)
 		{
 			bool end;
 			if (s == "!") end = true;
 			else end = false;
-			
+
 			if ((s.Contains("+") || s.Contains("*") || s.Contains("=") || s.Contains("(") || s.Contains(")")) || end)
 			{
 				char symbol = ' ';
@@ -272,7 +256,7 @@ namespace Lab1
 					else code.Push($"{right}\nSTORE ${num}\nLOAD {left}\nMPY ${num}");
 				}
 
-			if (symbol != ')' && !end) signs.Push(symbol);
+				if (symbol != ')' && !end) signs.Push(symbol);
 			}
 			else
 			{
@@ -284,5 +268,4 @@ namespace Lab1
 			}
 		}
 	}
-
 }
